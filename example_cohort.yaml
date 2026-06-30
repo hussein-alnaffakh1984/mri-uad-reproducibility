@@ -1,0 +1,24 @@
+# Example cohort definition.
+# Copy and edit for each cohort you want to build. No results live here, only
+# the construction parameters used by scripts/01_extract_features.py.
+
+name: example                 # used to name the output cache: out/cache_<name>.npz
+
+# Inputs (see docs/DATA.md)
+split_csv: data/split.csv     # per-volume rows: file, seq, path, status  (status in {normal, abnormal})
+annotation_csv: data/annotations.csv   # slice-level boxes: file, slice, x, y, width, height
+sequence: AXFLAIR             # which acquisition string to select from split_csv (substring match _<SEQ>_)
+
+# Slice selection
+img_size: 224                 # square resize fed to both encoders
+slice_frac: [0.30, 0.85]      # keep this central fraction of slices for normal volumes
+normal_per_vol: 12            # normal slices sampled per normal volume
+
+# Cohort sizes (auto-capped if fewer are available)
+n_ref: 400                    # normal reference slices that form the memory bank
+n_test_normal: 256            # held-out normal test slices
+
+# Detector / bank
+k: 5                          # nearest neighbours
+bank_subsample: 20000         # max patch vectors kept in the patch bank
+seed: 0
